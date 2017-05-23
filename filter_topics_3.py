@@ -56,4 +56,4 @@ def filter_topics():
             f.truncate()
             f.close()
 
-filter_topics()
+##filter_topics()
