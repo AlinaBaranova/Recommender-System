@@ -11,14 +11,14 @@ def result(search):
         
     return render_template('result.html', search=search, results=results)
 
-@app.route('/search/')
-def search():
+@app.route('/')
+def index():
     if len(request.args) > 0:
         search = request.args['search']
 
         return redirect(url_for('result', search=search))
     
-    return render_template('search.html')
+    return render_template('index.html')
 
 @app.route('/about/')
 def about():
