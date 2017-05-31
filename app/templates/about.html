@@ -1,24 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
 		<title>Topics of the NYPL Digital Collections</title>
-		<link type="text/css" rel="stylesheet" href= "{{ url_for('static', filename='style.css') }}" />
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/manual.css') }}" >
+		<script src="{{ url_for('static', filename='js/respond.min.js') }}"></script>
 	</head>
+
 	<body>
-		<div id="menu">
-			<a href="/search/">search</a>
-			<a href="/about/">about</a>
-			<a href="/help/">help</a>
+	<div class="container">
+	
+		<div class="row">
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container-fluid">
+					<div class="navbar-header">
+					</div>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li><a href="/">Search</a></li>
+							<li class="active"><a href="/about/">About</a></li>
+							<li><a href="/help/">Help</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
 		</div>
-		<div id="title">
-			<a href="/search/">Topics of the NYPL Digital Collections</a>
+		
+		<div class="row">
+			<div class="page-header">
+				<h1 class="text-center"><a href="/">Topics of the NYPL Digital Collections</a></h1>
+			</div>
 		</div>
-		<hr>
-		<div id="main">
-			<p id="subtitle">About</p>
+		
+		<div class="row">
+			<h2>About</h2>
 		</div>
-		<div id="bottom">
-			Contacts:
+		
+		<div class="row">
+			<p>This is a recommender system for topics of the New York Public Library Digital Collections. The aim of the project is to provide a tool for suggesting the topics that may interest user, relying only on their present search query. The algorithm uses several techniques to expand user's query and recommend them topics they would not find using key word search on the website of the NYPL Digital Collections.</p>
 		</div>
+	</div>
+	
+	<footer class="footer">
+      <div class="container">
+        <p class="text-muted">Contacts: </p>
+      </div>
+    </footer>
+	
+	<!-- JS код -->
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 	</body>
 </html>

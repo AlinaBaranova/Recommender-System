@@ -1,24 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 	<head>
 		<title>Topics of the NYPL Digital Collections</title>
-		<link type="text/css" rel="stylesheet" href= "{{ url_for('static', filename='style.css') }}" />
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/manual.css') }}" >
+		<script src="{{ url_for('static', filename='js/respond.min.js') }}"></script>
 	</head>
+
 	<body>
-		<div id="menu">
-			<a href="/search/">search</a>
-			<a href="/about/">about</a>
-			<a href="/help/">help</a>
+	<div class="container">
+	
+		<div class="row">
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container-fluid">
+					<div class="navbar-header">
+					</div>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav">
+							<li><a href="/">Search</a></li>
+							<li><a href="/about/">About</a></li>
+							<li class="active"><a href="/help/">Help</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
 		</div>
-		<div id="title">
-			<a href="/search/">Topics of the NYPL Digital Collections</a>
+		
+		<div class="row">
+			<div class="page-header">
+				<h1 class="text-center"><a href="/">Topics of the NYPL Digital Collections</a></h1>
+			</div>
 		</div>
-		<hr>
-		<div id="main">
-			<p id="subtitle">Help</p>
+		
+		<div class="row">
+			<h2>Help</h2>
 		</div>
-		<div id="bottom">
-			Contacts:
+		
+		<div class="row">
+			<p>Insert a word or phrase you want to find into the search field:</p>
 		</div>
+		
+		<div class="row">
+			<img class="img-responsive img-thumbnail" src="../img/tutorial_1.png" alt="">
+		</div>
+		
+		<div class="row">
+			<p>Press "Search!" button:</p>
+		</div>
+		
+		<div class="row">
+			<img class="img-responsive img-thumbnail" src="../img/tutorial_2.png" alt="">
+		</div>
+		
+		<div class="row">
+			<p>You get the list of topics that may be interesting for you:</p>
+		</div>
+		
+		<div class="row">
+			<img class="img-responsive img-thumbnail" src="../img/tutorial_3.png" alt="">
+		</div>
+		
+		<div class="row">
+			<p>By clicking on a topic you get redirected to the NYPL Digital Collections website page with the items corresponding to the topic:</p>
+		</div>
+		
+		
+			<img src="{{url_for('static', filename='tutorial_4.png')}}" alt="" />
+		
+		<div class="row">
+			<p>Ready to get started?</p>
+		</div>
+		
+	</div>
+	
+	<footer class="footer">
+      <div class="container">
+        <p class="text-muted">Contacts: </p>
+      </div>
+    </footer>
+	
+	<!-- JS код -->
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 	</body>
 </html>
