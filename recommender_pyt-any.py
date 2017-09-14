@@ -1,8 +1,8 @@
 import networkx as nx
 import json
 import re
-import os
 import treetaggerwrapper
+from os import path
 from nltk.corpus import wordnet
 from nltk import word_tokenize
 from nltk.corpus import stopwords
@@ -17,26 +17,25 @@ def analyze_query(query):
     punct = ',.()":;--&?!\'s'
     tokens = [token for token in tokens if token not in punct]
     tokens = [token for token in tokens if token not in stop]
-
+    
     new_query = ''
     for token in tokens:
         lemma = tagger.tag_text(token)[0].split('\t')[-1]
         new_query += lemma + ' '
-
+    
     return new_query.lower().strip()
-    #return ' '.join(tokens).lower()
-
-my_dir = os.path.dirname(__file__)
+#     return ' '.join(tokens).lower()
 
 # топики для моделей
-new_topics = json.loads(open(os.path.join(my_dir, 'analyzed_topics.json')).read())
+new_topics = json.loads(open('/home/abaranova/recommender/analyzed_topics.json').read())
 # модель с графом
-G = nx.read_gexf(os.path.join(my_dir, 'topics.gexf'))
+G = nx.read_gexf('/home/abaranova/recommender/topics.gexf')
 
-def sim_graph(word, results_n=10):
+def sim_graph(word, results_n=10):   
+    found_topics = []
     results = []
     recs = set()
-
+    
     for topic in new_topics:
         n = re.search('(\s|^)' + word.lower() + '(\s|$)', topic)
         if n is not None:
@@ -56,7 +55,7 @@ def sim_graph(word, results_n=10):
     return results
 
 # модель word2vec
-model = json.loads(open(os.path.join(my_dir, 'model_in_dic.json'), 'r').read())
+model = json.loads(open('/home/abaranova/recommender/model_in_dic.json', 'r').read())
 def sim_word2vec(word, results_n=10):
     pos_tags = ['ADJ', 'ADV', 'NOUN', 'PROPN', 'VERB']
     results = []
@@ -69,7 +68,7 @@ def sim_word2vec(word, results_n=10):
                 for topic in new_topics:
                     n = re.search('(\s|^)' + sim_word.lower() + '(\s|$)', topic)
                     if n is not None and word not in topic:
-                        result = new_topics[topic]
+                        result = new_topics[topic] 
                         for r in result:
                             if r not in results:
                                  results.append(r)
@@ -95,7 +94,7 @@ def sim_wordnet(word, results_n=10):
     results = set()
     word = word.replace(' ', '_')
     lemmas = set()
-
+    
     for syn in wordnet.synsets(word):
         for synonym in syn.lemmas():
             synonym_name = synonym.name().lower()
@@ -104,7 +103,7 @@ def sim_wordnet(word, results_n=10):
                 results = add_topics(synonym_name, word, results, results_n)
         if len(results) >= results_n:
             return results
-
+        
     lemmas = set()
     for syn in wordnet.synsets(word):
         for synonym in syn.lemmas():
@@ -116,7 +115,7 @@ def sim_wordnet(word, results_n=10):
                         results = add_topics(antonym_name, word, results, results_n)
         if len(results) >= results_n:
             return results
-
+    
     lemmas = set()
     for syn in wordnet.synsets(word):
         if syn.hypernyms():
@@ -128,7 +127,7 @@ def sim_wordnet(word, results_n=10):
                         results = add_topics(hypernym_name, word, results, results_n)
         if len(results) >= results_n:
             return results
-
+        
     lemmas = set()
     for syn in wordnet.synsets(word):
         if syn.hyponyms():
@@ -137,21 +136,21 @@ def sim_wordnet(word, results_n=10):
                     hyponym_name = hyponym.name().lower()
                     if hyponym_name not in lemmas:
                         lemmas.add(hyponym_name)
-                        results = add_topics(hyponym_name, word, results, results_n)
+                        results = add_topics(hyponym_name, word, results, results_n)      
         if len(results) >= results_n:
             return results
 
     return list(results)
 
 # ссылки
-special_char = {'<': '%3C', '>': '%3E', '#': '%23', '%': '%25', '{': '%7B', '}': '%7D', '|': '%7C', '\\': '%5C',
-                '^': '%5E', '~': '%7E', '[': '%5B', ']': '%5D', '`': '%60', ';': '%3B', '/': '%2F', '?': '%3F',
-                ':': '%3A', '@': '%40', '=': '%3D', '&': '%26', '$': '%24', '+': '%2B', '"': '%22'}
+special_char = {'<': '%3C', '>': '%3E', '#': '%23', '%': '%25', '{': '%7B', '}': '%7D', '|': '%7C', '\\': '%5C', 
+                '^': '%5E', '~': '%7E', '[': '%5B', ']': '%5D', '`': '%60', ';': '%3B', '/': '%2F', '?': '%3F', 
+                ':': '%3A', '@': '%40', '=': '%3D', '&': '%26', '$': '%24', '+': '%2B', '"': '%22', ' ': '%20'}
 def right_link(link):
     main_link = 'https://digitalcollections.nypl.org/search/index?filters%5Btopic%5D='
     for i in special_char:
         link = link.replace(i, special_char[i])
-    return main_link + link.replace(' ', '+')
+    return main_link + link
 
 from flask import Flask, request, render_template, url_for, redirect
 app = Flask(__name__)
@@ -162,20 +161,20 @@ def result(search):
         search = request.args['search']
 
     query = analyze_query(search)
-    results = sim_word2vec(query)
+    results = sim_graph(search)
     if len(set(results)) < 10:
-        results += sim_graph(query)
+        results += sim_word2vec(search)
     if len(set(results)) < 10:
-        results += list(sim_wordnet(query))
-
+        results += list(sim_wordnet(search))
+        
     new_results = []
     for result in results:
         if [result, right_link(result)] not in new_results:
             new_results.append([result, right_link(result)])
-
+    
     if new_results != []:
         return render_template('result.html', search=search, results=new_results)
-
+    
     return render_template('no_results.html', search=search)
 
 @app.route('/')
@@ -184,10 +183,10 @@ def index():
         search = request.args['search']
 
         return redirect(url_for('result', search=search))
-
+    
 #     not_in_graph = json.loads(open('not_in_graph.json').read())
 #     return render_template('index.html', not_in_graph=not_in_graph)
-
+    
     return render_template('index.html')
 
 @app.route('/about/')
@@ -197,3 +196,6 @@ def about():
 @app.route('/help/')
 def help():
     return render_template('help.html')
+
+if __name__ == '__main__':
+    app.run()
