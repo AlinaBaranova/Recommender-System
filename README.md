@@ -1,9 +1,5 @@
 # Recommender System
 
-A recommender system for the topics used for tagging items of the New York Public Library Digital Collections.
-
-### About
-
 The New York Public Library provides an enormous collection of digital items, such as images, maps, sound recordings, or videos. At the beginning of this project, there were in total 765,395 items, about 52% of which were tagged with topics. The recommender system is implemented as a website that allows the user to enter a query and suggests tags of the New York Public Library Digital Collections similar to the query.
 
 ### Three different approaches are used in the recommender system:
