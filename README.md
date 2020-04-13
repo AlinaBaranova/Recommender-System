@@ -13,3 +13,8 @@ The New York Public Library provides an enormous collection of digital items, su
 ### Example:
 
 - for the “jazz”, the system suggests the following topics: “Violinists”, “African American composers”, “Pianists”, “Trumpet players”, “Saxophonists”, “Special events”, “Blacks”, “Popular music”, “Music”, “Bands (Music)”
+
+### Languages used:
+ 
+ - Python: downloading tags, creating a graph, enabling recommendations with a vector space model and the WordNet, operating of the website
+ - CSS & HTML: pages of the website
