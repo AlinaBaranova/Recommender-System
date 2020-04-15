@@ -16,5 +16,5 @@ The New York Public Library provides an enormous collection of digital items, su
 
 ### Languages used:
  
- - Python: downloading tags, creating a graph, enabling recommendations with a vector space model and the WordNet, operating of the website
- - CSS & HTML: pages of the website
+ - Python: downloading tags, creating a graph, enabling recommendations with a vector space model and the WordNet, website backend
+ - CSS & HTML: website frontend
